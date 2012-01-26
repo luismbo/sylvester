@@ -122,12 +122,14 @@ new Test.Unit.Runner({
   testZeroMatrix: function() { with(this) {
     var M;
     for (var i = 1; i < 5; i++) {
-      M = Matrix.Random(5,i);
+      M = Matrix.Zero(5,i);
       assertIdentical(5, M.rows());
       assertIdentical(i, M.cols());
-      M = Matrix.Random(i,2);
+      M.map(function(el) { assert(el == 0) });
+      M = Matrix.Zero(i,2);
       assertIdentical(i, M.rows());
       assertIdentical(2, M.cols());
+      M.map(function(el) { assert(el == 0) });
     }
   }},
   
