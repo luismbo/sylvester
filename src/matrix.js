@@ -470,9 +470,9 @@ Matrix.I = function(n, fn) {
 };
 
 // Diagonal matrix - all off-diagonal elements are zero
-Matrix.Diagonal = function(elements) {
+Matrix.Diagonal = function(elements, fn) {
   var i = elements.length;
-  var M = Matrix.I(i);
+  var M = Matrix.I(i, fn);
   while (i--) {
     M.elements[i][i] = elements[i];
   }
