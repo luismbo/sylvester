@@ -483,7 +483,7 @@ Matrix.RotationY = function(t, fn) {
     [ _fn["-"](s),  zero,  c ]
   ], _fn);
 };
-Matrix.RotationZ = function(t) {
+Matrix.RotationZ = function(t, fn) {
   var _fn = fn ? fn : Matrix.prototype._fn;
   var c = _fn.cos(t), s = _fn.sin(t);
   var zero = _fn["+"](), one = _fn["*"]();
