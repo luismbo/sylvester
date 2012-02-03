@@ -2,57 +2,7 @@
 
 function Matrix() {}
 Matrix.prototype = {
-
-  // The internal _fn object holds various arithmetic functions that
-  // know how to deal with whatever object type the user has chosen to
-  // fill matrices with.
-  //
-  // For convenience, we've chosen to follow the javascript-bignum's
-  // Scheme-like nomenclature so that we can use its `fn' object
-  // directly without some sort of proxy.
-  //
-  // This default object deals with Javascript Numbers, accounting for
-  // Sylvester.precision when performing comparisons.
-  _fn: {
-    // Returns true if x and y are equal
-    "=": function(x, y) { return Math.abs(x - y) <= Sylvester.precision; },
-
-    // Returns the sum of x and y. When invoked without arguments,
-    // returns the neutral element of addition
-    "+": function(x, y) { return (x != null && y != null) ? x + y : 0; },
-
-    // Returns the result of subtracting y to x. If passed only one
-    // argument, returns -x
-    "-": function(x, y) { return y == null ? -x : x - y; },
-
-    // Returns the product between x and y. When invoked without
-    // arguments, returns the neutral element of multiplication
-    "*": function(x, y) { return (x != null && y != null) ? x * y : 1; },
-
-    // Returns x divided by y
-    "/": function(x, y) { return x / y; },
-
-    // Returns true if x is larger that y
-    ">": function(x, y) { return x > y; },
-
-    // Returns the absolute value of x
-    abs: Math.abs,
-
-    // Returns true if x is zero
-    "zero?": function(x) { return x == 0; },
-
-    // Returns the closest integer to x
-    round: Math.round,
-
-    // Returns the sine of x
-    sin: Math.sin,
-
-    // Return the cosine of x
-    cos: Math.cos,
-
-    // Returns a random number within the interval [0, limit[
-    random: function(limit) { return Math.floor(Math.random() * limit); }
-  },
+  _fn: Sylverster._fn,
 
   // Returns element (i,j) of the matrix
   e: function(i,j) {
