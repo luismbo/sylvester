@@ -2,7 +2,7 @@
 
 function Matrix() {}
 Matrix.prototype = {
-  _fn: Sylverster._fn,
+  _fn: Sylvester._fn,
 
   // Returns element (i,j) of the matrix
   e: function(i,j) {
@@ -398,9 +398,7 @@ Matrix.prototype = {
 // Constructor function
 Matrix.create = function(elements, fn) {
   var M = new Matrix();
-  if (fn) {
-    M._fn = fn;
-  }
+  if (fn) { M._fn = fn; }
   return M.setElements(elements);
 };
 var $M = Matrix.create;
