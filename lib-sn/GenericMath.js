@@ -19,14 +19,6 @@ var GenericMath = (function(){
         return sn(Number(x).toString());
     }
 
-    function maybeNaturalize(sx) {
-        // this returns NaN for complex numbers and Infinity for
-        // sufficiently large Bignums, so let's not consider those as
-        // lossless conversions to native floats.
-        var x = sx.valueOf();
-        return fn["eqv?"](sx, ensureSN(x)) ? x : sx;
-    }
-
     return function(op, x, y) {
         if (!isNumber(x) || !isNumber(y)) {
             switch (op) {
@@ -50,7 +42,6 @@ var GenericMath = (function(){
         case "%": op = "mod"; break;
         }
 
-        var res = fn[op](ensureSN(x), ensureSN(y));
-        return (res instanceof Number) ? maybeNaturalize(res) : res;
+        return fn[op](ensureSN(x), ensureSN(y));
     }
 })();
