@@ -26,7 +26,7 @@ function generalizeArithmetic(ast) {
         "binary": function(op, left, right) {
             switch (op) {
             case "+": case "-": case "*": case "/":
-            case "==": case "===":
+            case "==": case "===": case "!=": case "!==":
             case ">": case "<": case ">=": case "<=":
                 return genericOp(op, walk(left), walk(right));
             default:

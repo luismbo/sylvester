@@ -23,7 +23,9 @@ var GenericMath = (function(){
         if (!isNumber(x) || !isNumber(y)) {
             switch (op) {
             case "==": return x == y;
+            case "!=": return x != y;
             case "===": return x === y;
+            case "!==": return x !== y;
             case "<": return x < y;
             case ">": return x > y;
             case ">=": return x >= y;
@@ -36,12 +38,21 @@ var GenericMath = (function(){
             }
         }
 
+        var flip = false;
         switch (op) {
-        case "==": // is this right?
-        case "===": op = "eqv?"; break;
-        case "%": op = "mod"; break;
+        case "!=":
+        case "!==":
+            flip = true;
+        case "==":
+        case "===":
+            op = "eqv?";
+            break;
+        case "%":
+            op = "mod";
+            break;
         }
 
-        return fn[op](ensureSN(x), ensureSN(y));
+        var result = fn[op](ensureSN(x), ensureSN(y));
+        return flip ? !result : result;
     }
 })();

@@ -40,7 +40,7 @@ Sylvester.Vector.prototype = {
     eql: function(vector) {
         var n = this.elements.length;
         var V = vector.elements || vector;
-        if (n !== V.length) {
+        if (GenericMath("!==", n, V.length)) {
             return false;
         }
         while (n--) {
@@ -78,7 +78,7 @@ Sylvester.Vector.prototype = {
     angleFrom: function(vector) {
         var V = vector.elements || vector;
         var n = this.elements.length, k = n, i;
-        if (n !== V.length) {
+        if (GenericMath("!==", n, V.length)) {
             return null;
         }
         var dot = 0, mod1 = 0, mod2 = 0;
@@ -115,7 +115,7 @@ Sylvester.Vector.prototype = {
     },
     add: function(vector) {
         var V = vector.elements || vector;
-        if (this.elements.length !== V.length) {
+        if (GenericMath("!==", this.elements.length, V.length)) {
             return null;
         }
         return this.map(function(x, i) {
@@ -124,7 +124,7 @@ Sylvester.Vector.prototype = {
     },
     subtract: function(vector) {
         var V = vector.elements || vector;
-        if (this.elements.length !== V.length) {
+        if (GenericMath("!==", this.elements.length, V.length)) {
             return null;
         }
         return this.map(function(x, i) {
@@ -139,7 +139,7 @@ Sylvester.Vector.prototype = {
     dot: function(vector) {
         var V = vector.elements || vector;
         var i, product = 0, n = this.elements.length;
-        if (n !== V.length) {
+        if (GenericMath("!==", n, V.length)) {
             return null;
         }
         while (n--) {
@@ -149,7 +149,7 @@ Sylvester.Vector.prototype = {
     },
     cross: function(vector) {
         var B = vector.elements || vector;
-        if (this.elements.length !== 3 || B.length !== 3) {
+        if (GenericMath("!==", this.elements.length, 3) || GenericMath("!==", B.length, 3)) {
             return null;
         }
         var A = this.elements;
@@ -191,7 +191,7 @@ Sylvester.Vector.prototype = {
             return obj.distanceFrom(this);
         }
         var V = obj.elements || obj;
-        if (V.length !== this.elements.length) {
+        if (GenericMath("!==", V.length, this.elements.length)) {
             return null;
         }
         var sum = 0, part;
@@ -215,7 +215,7 @@ Sylvester.Vector.prototype = {
         switch (this.elements.length) {
           case 2:
             V = obj.elements || obj;
-            if (V.length !== 2) {
+            if (GenericMath("!==", V.length, 2)) {
                 return null;
             }
             if (!R) {
@@ -249,7 +249,7 @@ Sylvester.Vector.prototype = {
             return Sylvester.Vector.create([ GenericMath("+", C[0], GenericMath("-", C[0], P[0])), GenericMath("+", C[1], GenericMath("-", C[1], P[1])), GenericMath("+", C[2], GenericMath("-", C[2], P[2] || 0)) ]);
         } else {
             var Q = obj.elements || obj;
-            if (this.elements.length !== Q.length) {
+            if (GenericMath("!==", this.elements.length, Q.length)) {
                 return null;
             }
             return this.map(function(x, i) {
@@ -324,7 +324,7 @@ Sylvester.Matrix.Rotation = function(theta, a) {
         return Sylvester.Matrix.create([ [ Math.cos(theta), -Math.sin(theta) ], [ Math.sin(theta), Math.cos(theta) ] ]);
     }
     var axis = a.dup();
-    if (axis.elements.length !== 3) {
+    if (GenericMath("!==", axis.elements.length, 3)) {
         return null;
     }
     var mod = axis.modulus();
@@ -416,10 +416,10 @@ Sylvester.Matrix.prototype = {
         if (GenericMath("===", this.elements.length, 0) || GenericMath("===", M.length, 0)) {
             return GenericMath("===", this.elements.length, M.length);
         }
-        if (this.elements.length !== M.length) {
+        if (GenericMath("!==", this.elements.length, M.length)) {
             return false;
         }
-        if (this.elements[0].length !== M[0].length) {
+        if (GenericMath("!==", this.elements[0].length, M[0].length)) {
             return false;
         }
         var i = this.elements.length, nj = this.elements[0].length, j;
@@ -617,7 +617,7 @@ Sylvester.Matrix.prototype = {
         for (i = 0; GenericMath("<", i, n); i++) {
             if (GenericMath("===", M.elements[i][i], 0)) {
                 for (j = GenericMath("+", i, 1); GenericMath("<", j, n); j++) {
-                    if (M.elements[j][i] !== 0) {
+                    if (GenericMath("!==", M.elements[j][i], 0)) {
                         els = [];
                         for (p = 0; GenericMath("<", p, np); p++) {
                             els.push(GenericMath("+", M.elements[i][p], M.elements[j][p]));
@@ -627,7 +627,7 @@ Sylvester.Matrix.prototype = {
                     }
                 }
             }
-            if (M.elements[i][i] !== 0) {
+            if (GenericMath("!==", M.elements[i][i], 0)) {
                 for (j = GenericMath("+", i, 1); GenericMath("<", j, n); j++) {
                     var multiplier = GenericMath("/", M.elements[j][i], M.elements[i][i]);
                     els = [];
@@ -697,7 +697,7 @@ Sylvester.Matrix.prototype = {
         }
         var T = this.dup(), cols = T.elements[0].length;
         var i = T.elements.length, nj = M[0].length, j;
-        if (i !== M.length) {
+        if (GenericMath("!==", i, M.length)) {
             return null;
         }
         while (i--) {
@@ -763,7 +763,7 @@ Sylvester.Matrix.prototype = {
     },
     setElements: function(els) {
         var i, j, elements = els.elements || els;
-        if (elements[0] && typeof elements[0][0] !== "undefined") {
+        if (elements[0] && GenericMath("!==", typeof elements[0][0], "undefined")) {
             i = elements.length;
             this.elements = [];
             while (i--) {
@@ -843,7 +843,7 @@ Sylvester.Line.prototype = {
             return this.contains(obj.start) && this.contains(obj.end);
         }
         var dist = this.distanceFrom(obj);
-        return dist !== null && GenericMath("<=", dist, Sylvester.precision);
+        return GenericMath("!==", dist, null) && GenericMath("<=", dist, Sylvester.precision);
     },
     positionOf: function(point) {
         if (!this.contains(point)) {
@@ -1029,7 +1029,7 @@ Sylvester.Line.Segment.prototype = {
         return V.isAntiparallelTo(vect) && GenericMath("<=", V.modulus(), vect.modulus());
     },
     intersects: function(obj) {
-        return this.intersectionWith(obj) !== null;
+        return GenericMath("!==", this.intersectionWith(obj), null);
     },
     intersectionWith: function(obj) {
         if (!this.line.intersects(obj)) {
@@ -1213,7 +1213,7 @@ Sylvester.Plane.prototype = {
         var A1 = anchor.elements[0], A2 = anchor.elements[1], A3 = anchor.elements[2];
         var v11 = v1.elements[0], v12 = v1.elements[1], v13 = v1.elements[2];
         var normal, mod;
-        if (v2 !== null) {
+        if (GenericMath("!==", v2, null)) {
             var v21 = v2.elements[0], v22 = v2.elements[1], v23 = v2.elements[2];
             normal = Sylvester.Vector.create([ GenericMath("-", GenericMath("*", GenericMath("-", v12, A2), GenericMath("-", v23, A3)), GenericMath("*", GenericMath("-", v13, A3), GenericMath("-", v22, A2))), GenericMath("-", GenericMath("*", GenericMath("-", v13, A3), GenericMath("-", v21, A1)), GenericMath("*", GenericMath("-", v11, A1), GenericMath("-", v23, A3))), GenericMath("-", GenericMath("*", GenericMath("-", v11, A1), GenericMath("-", v22, A2)), GenericMath("*", GenericMath("-", v12, A2), GenericMath("-", v21, A1))) ]);
             mod = normal.modulus();
@@ -1269,7 +1269,7 @@ Sylvester.Plane.fromPoints = function(points) {
             N = Sylvester.Vector.create([ GenericMath("-", GenericMath("*", GenericMath("-", A[1], B[1]), GenericMath("-", C[2], B[2])), GenericMath("*", GenericMath("-", A[2], B[2]), GenericMath("-", C[1], B[1]))), GenericMath("-", GenericMath("*", GenericMath("-", A[2], B[2]), GenericMath("-", C[0], B[0])), GenericMath("*", GenericMath("-", A[0], B[0]), GenericMath("-", C[2], B[2]))), GenericMath("-", GenericMath("*", GenericMath("-", A[0], B[0]), GenericMath("-", C[1], B[1])), GenericMath("*", GenericMath("-", A[1], B[1]), GenericMath("-", C[0], B[0]))) ]).toUnitVector();
             if (GenericMath(">", n, 3)) {
                 theta = N.angleFrom(prevN);
-                if (theta !== null) {
+                if (GenericMath("!==", theta, null)) {
                     if (!(GenericMath("<=", Math.abs(theta), Sylvester.precision) || GenericMath("<=", Math.abs(GenericMath("-", theta, Math.PI)), Sylvester.precision))) {
                         return null;
                     }
@@ -1337,13 +1337,13 @@ Sylvester.Polygon.prototype = {
     },
     updateTrianglePlanes: function(fn) {
         var i;
-        if (this.cached.triangles !== null) {
+        if (GenericMath("!==", this.cached.triangles, null)) {
             i = this.cached.triangles.length;
             while (i--) {
                 this.cached.triangles[i].plane = fn(this.cached.triangles[i].plane);
             }
         }
-        if (this.cached.surfaceIntegralElements !== null) {
+        if (GenericMath("!==", this.cached.surfaceIntegralElements, null)) {
             i = this.cached.surfaceIntegralElements.length;
             while (i--) {
                 this.cached.surfaceIntegralElements[i].plane = fn(this.cached.surfaceIntegralElements[i].plane);
@@ -1354,7 +1354,7 @@ Sylvester.Polygon.prototype = {
         return GenericMath("===", this.vertices.length, 3);
     },
     trianglesForSurfaceIntegral: function() {
-        if (this.cached.surfaceIntegralElements !== null) {
+        if (GenericMath("!==", this.cached.surfaceIntegralElements, null)) {
             return this.cached.surfaceIntegralElements;
         }
         var triangles = [];
@@ -1427,7 +1427,7 @@ Sylvester.Polygon.prototype = {
             this.reflexVertices.remove(this.reflexVertices.withData(node.data));
         }
         this.vertices.remove(node);
-        if (prevWasConvex !== prev.data.isConvex(this)) {
+        if (GenericMath("!==", prevWasConvex, prev.data.isConvex(this))) {
             if (prevWasConvex) {
                 this.convexVertices.remove(this.convexVertices.withData(prev.data));
                 this.reflexVertices.append(new Sylvester.LinkedList.Node(prev.data));
@@ -1436,7 +1436,7 @@ Sylvester.Polygon.prototype = {
                 this.convexVertices.append(new Sylvester.LinkedList.Node(prev.data));
             }
         }
-        if (nextWasConvex !== next.data.isConvex(this)) {
+        if (GenericMath("!==", nextWasConvex, next.data.isConvex(this))) {
             if (nextWasConvex) {
                 this.convexVertices.remove(this.convexVertices.withData(next.data));
                 this.reflexVertices.append(new Sylvester.LinkedList.Node(next.data));
@@ -1478,7 +1478,7 @@ Sylvester.Polygon.prototype = {
                 theta += GenericMath("*", 2, Math.PI);
             }
         });
-        return loops !== 0;
+        return GenericMath("!==", loops, 0);
     },
     hasEdgeContaining: function(point) {
         var P = point.elements || point;
@@ -1491,7 +1491,7 @@ Sylvester.Polygon.prototype = {
         return success;
     },
     toTriangles: function() {
-        if (this.cached.triangles !== null) {
+        if (GenericMath("!==", this.cached.triangles, null)) {
             return this.cached.triangles;
         }
         return this.setCache("triangles", this.triangulateByEarClipping());
@@ -1506,7 +1506,7 @@ Sylvester.Polygon.prototype = {
                 mainNode = poly.vertices.withData(convexNode.data);
                 trig = Sylvester.Polygon.create([ mainNode.data, mainNode.next.data, mainNode.prev.data ], this.plane);
                 poly.reflexVertices.each(function(node) {
-                    if (node.data !== mainNode.prev.data && node.data !== mainNode.next.data) {
+                    if (GenericMath("!==", node.data, mainNode.prev.data) && GenericMath("!==", node.data, mainNode.next.data)) {
                         if (trig.contains(node.data) || trig.hasEdgeContaining(node.data)) {
                             success = false;
                         }
@@ -1579,7 +1579,7 @@ Sylvester.Polygon.Vertex = function(point) {
     if (GenericMath("===", this.elements.length, 2)) {
         this.elements.push(0);
     }
-    if (this.elements.length !== 3) {
+    if (GenericMath("!==", this.elements.length, 3)) {
         return null;
     }
 };
@@ -1775,5 +1775,5 @@ Sylvester.LinkedList.Circular.fromArray = function(list, useNodes) {
     api.Plane = Sylvester.Plane;
     api.Polygon = Sylvester.Polygon;
     api.Vector = Sylvester.Vector;
-    if (typeof WScript !== "undefined") this.Sylvester = Sylvester;
+    if (GenericMath("!==", typeof WScript, "undefined")) this.Sylvester = Sylvester;
 })();
