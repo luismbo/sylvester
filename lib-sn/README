@@ -1,0 +1,2 @@
+Generate sylvester-sn.js with:
+   node generalize-arithmetic.js ../lib/sylvester.js > sylvester-sn.js
