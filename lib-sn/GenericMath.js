@@ -19,6 +19,10 @@ var GenericMath = (function(){
         return sn(Number(x).toString());
     }
 
+    function maybeNaturalize(x) {
+        return (x instanceof Number && fn["zero?"](x)) ? 0 : x;
+    }
+
     return function(op, x, y) {
         if (!isNumber(x) || !isNumber(y)) {
             switch (op) {
@@ -53,6 +57,6 @@ var GenericMath = (function(){
         }
 
         var result = fn[op](ensureSN(x), ensureSN(y));
-        return flip ? !result : result;
+        return flip ? !result : maybeNaturalize(result);
     }
 })();
