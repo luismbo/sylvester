@@ -64,6 +64,14 @@ function genericUnaryPostfixOp(op, expr) {
                    [ "name", "__generic_math_tmp" ] ] ] ] ];
 }
 
+// Returns an AST for the expression:
+//   <lvalue> = GenericMath("<op>", <lvalue>, <rvalue>)
+function genericAssignment(op, lvalue, rvalue) {
+    return [ "assign", true,
+             lvalue,
+             genericOp(op, lvalue, rvalue) ]
+}
+
 function generalizeArithmetic(ast) {
     var walker = pro.ast_walker(), walk = walker.walk;
     return walker.with_walkers({
@@ -93,6 +101,14 @@ function generalizeArithmetic(ast) {
                 return genericUnaryPostfixOp(op, walk(expr));
             default:
                 return [ this[0], op, walk(expr) ];
+            }
+        },
+        "assign": function(op, lvalue, rvalue) {
+            switch (op) {
+            case "+": case "-": case "*": case "/": case "%":
+                return genericAssignment(op, walk(lvalue), walk(rvalue));
+            default:
+                return [ this[0], op, walk(lvalue), walk(rvalue) ];
             }
         }
     }, function() { return walk(ast); });

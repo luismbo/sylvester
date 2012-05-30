@@ -99,9 +99,9 @@ Sylvester.Vector.prototype = {
         }
         var dot = 0, mod1 = 0, mod2 = 0;
         this.each(function(x, i) {
-            dot += GenericMath("*", x, V[GenericMath("-", i, 1)]);
-            mod1 += GenericMath("*", x, x);
-            mod2 += GenericMath("*", V[GenericMath("-", i, 1)], V[GenericMath("-", i, 1)]);
+            dot = GenericMath("+", dot, GenericMath("*", x, V[GenericMath("-", i, 1)]));
+            mod1 = GenericMath("+", mod1, GenericMath("*", x, x));
+            mod2 = GenericMath("+", mod2, GenericMath("*", V[GenericMath("-", i, 1)], V[GenericMath("-", i, 1)]));
         });
         mod1 = Math.sqrt(mod1);
         mod2 = Math.sqrt(mod2);
@@ -163,7 +163,7 @@ Sylvester.Vector.prototype = {
             n = GenericMath("-", __generic_math_tmp, 1);
             return __generic_math_tmp;
         }()) {
-            product += GenericMath("*", this.elements[n], V[n]);
+            product = GenericMath("+", product, GenericMath("*", this.elements[n], V[n]));
         }
         return product;
     },
@@ -225,7 +225,7 @@ Sylvester.Vector.prototype = {
         var sum = 0, part;
         this.each(function(x, i) {
             part = GenericMath("-", x, V[GenericMath("-", i, 1)]);
-            sum += GenericMath("*", part, part);
+            sum = GenericMath("+", sum, GenericMath("*", part, part));
         });
         return Math.sqrt(sum);
     },
@@ -606,7 +606,7 @@ Sylvester.Matrix.prototype = {
                     c = GenericMath("-", __generic_math_tmp, 1);
                     return __generic_math_tmp;
                 }()) {
-                    sum += GenericMath("*", this.elements[i][c], M[c][j]);
+                    sum = GenericMath("+", sum, GenericMath("*", this.elements[i][c], M[c][j]));
                 }
                 elements[i][j] = sum;
             }
@@ -810,7 +810,7 @@ Sylvester.Matrix.prototype = {
             i = GenericMath("+", __generic_math_tmp, 1);
             return __generic_math_tmp;
         }()) {
-            tr += this.elements[i][i];
+            tr = GenericMath("+", tr, this.elements[i][i]);
         }
         return tr;
     },
@@ -1600,7 +1600,7 @@ Sylvester.Polygon.prototype = {
                 i = GenericMath("-", __generic_math_tmp, 1);
                 return __generic_math_tmp;
             }()) {
-                area += GenericMath("*", trigs[i].area(), trigs[i].plane.normal.dot(this.plane.normal));
+                area = GenericMath("+", area, GenericMath("*", trigs[i].area(), trigs[i].plane.normal.dot(this.plane.normal)));
             }
             return area;
         }
@@ -1618,7 +1618,7 @@ Sylvester.Polygon.prototype = {
                 return __generic_math_tmp;
             }()) {
                 A = GenericMath("*", trigs[i].area(), trigs[i].plane.normal.dot(this.plane.normal));
-                M += A;
+                M = GenericMath("+", M, A);
                 P = V.elements;
                 C = trigs[i].centroid().elements;
                 V.setElements([ GenericMath("+", P[0], GenericMath("*", C[0], A)), GenericMath("+", P[1], GenericMath("*", C[1], A)), GenericMath("+", P[2], GenericMath("*", C[2], A)) ]);
@@ -1692,14 +1692,14 @@ Sylvester.Polygon.prototype = {
             if (GenericMath("===", dt, null) || GenericMath("===", dt, 0)) {
                 return;
             }
-            theta += GenericMath("*", A.cross(B).isParallelTo(self.plane.normal) ? 1 : GenericMath("-", 0, 1), dt);
+            theta = GenericMath("+", theta, GenericMath("*", A.cross(B).isParallelTo(self.plane.normal) ? 1 : GenericMath("-", 0, 1), dt));
             if (GenericMath(">=", theta, GenericMath("-", GenericMath("*", 2, Math.PI), Sylvester.precision))) {
                 (function() {
                     var __generic_math_tmp = loops;
                     loops = GenericMath("+", __generic_math_tmp, 1);
                     return __generic_math_tmp;
                 })();
-                theta -= GenericMath("*", 2, Math.PI);
+                theta = GenericMath("-", theta, GenericMath("*", 2, Math.PI));
             }
             if (GenericMath("<=", theta, GenericMath("+", GenericMath("*", GenericMath("-", 0, 2), Math.PI), Sylvester.precision))) {
                 (function() {
@@ -1707,7 +1707,7 @@ Sylvester.Polygon.prototype = {
                     loops = GenericMath("-", __generic_math_tmp, 1);
                     return __generic_math_tmp;
                 })();
-                theta += GenericMath("*", 2, Math.PI);
+                theta = GenericMath("+", theta, GenericMath("*", 2, Math.PI));
             }
         });
         return GenericMath("!==", loops, 0);
