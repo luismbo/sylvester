@@ -19,8 +19,18 @@ var GenericMath = (function(){
         return sn(Number(x).toString());
     }
 
-    function maybeNaturalize(x) {
-        return (x instanceof Number && fn["zero?"](x)) ? 0 : x;
+    function maybeNaturalize(sx) {
+        if (!(sx instanceof Number)) {
+            return sx;
+        } else if (fn["zero?"](sx)) {
+            return 0;
+        } else {
+            // valueOf() returns NaN for complex numbers and Infinity
+            // for sufficiently large Bignums; let's not consider
+            // those as lossless conversions to native floats.
+            var nx = sx.valueOf();
+            return fn["eqv?"](sx, ensureSN(nx)) ? nx : sx;
+        }
     }
 
     return function(op, x, y) {
