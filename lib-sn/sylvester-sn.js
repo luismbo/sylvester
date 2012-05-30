@@ -13,7 +13,11 @@ var $V = Sylvester.Vector.create;
 
 Sylvester.Vector.Random = function(n) {
     var elements = [];
-    while (n--) {
+    while (function() {
+        var __generic_math_tmp = n;
+        n = GenericMath("-", __generic_math_tmp, 1);
+        return __generic_math_tmp;
+    }()) {
         elements.push(Math.random());
     }
     return Sylvester.Vector.create(elements);
@@ -21,7 +25,11 @@ Sylvester.Vector.Random = function(n) {
 
 Sylvester.Vector.Zero = function(n) {
     var elements = [];
-    while (n--) {
+    while (function() {
+        var __generic_math_tmp = n;
+        n = GenericMath("-", __generic_math_tmp, 1);
+        return __generic_math_tmp;
+    }()) {
         elements.push(0);
     }
     return Sylvester.Vector.create(elements);
@@ -43,7 +51,11 @@ Sylvester.Vector.prototype = {
         if (GenericMath("!==", n, V.length)) {
             return false;
         }
-        while (n--) {
+        while (function() {
+            var __generic_math_tmp = n;
+            n = GenericMath("-", __generic_math_tmp, 1);
+            return __generic_math_tmp;
+        }()) {
             if (GenericMath(">", Math.abs(GenericMath("-", this.elements[n], V[n])), Sylvester.precision)) {
                 return false;
             }
@@ -62,7 +74,11 @@ Sylvester.Vector.prototype = {
     },
     forEach: function(fn, context) {
         var n = this.elements.length;
-        for (var i = 0; GenericMath("<", i, n); i++) {
+        for (var i = 0; GenericMath("<", i, n); function() {
+            var __generic_math_tmp = i;
+            i = GenericMath("+", __generic_math_tmp, 1);
+            return __generic_math_tmp;
+        }()) {
             fn.call(context, this.elements[i], GenericMath("+", i, 1));
         }
     },
@@ -93,8 +109,8 @@ Sylvester.Vector.prototype = {
             return null;
         }
         var theta = GenericMath("/", dot, GenericMath("*", mod1, mod2));
-        if (GenericMath("<", theta, -1)) {
-            theta = -1;
+        if (GenericMath("<", theta, GenericMath("-", 0, 1))) {
+            theta = GenericMath("-", 0, 1);
         }
         if (GenericMath(">", theta, 1)) {
             theta = 1;
@@ -142,7 +158,11 @@ Sylvester.Vector.prototype = {
         if (GenericMath("!==", n, V.length)) {
             return null;
         }
-        while (n--) {
+        while (function() {
+            var __generic_math_tmp = n;
+            n = GenericMath("-", __generic_math_tmp, 1);
+            return __generic_math_tmp;
+        }()) {
             product += GenericMath("*", this.elements[n], V[n]);
         }
         return product;
@@ -157,7 +177,11 @@ Sylvester.Vector.prototype = {
     },
     max: function() {
         var m = 0, i = this.elements.length;
-        while (i--) {
+        while (function() {
+            var __generic_math_tmp = i;
+            i = GenericMath("-", __generic_math_tmp, 1);
+            return __generic_math_tmp;
+        }()) {
             if (GenericMath(">", Math.abs(this.elements[i]), Math.abs(m))) {
                 m = this.elements[i];
             }
@@ -166,7 +190,11 @@ Sylvester.Vector.prototype = {
     },
     indexOf: function(x) {
         var index = null, n = this.elements.length;
-        for (var i = 0; GenericMath("<", i, n); i++) {
+        for (var i = 0; GenericMath("<", i, n); function() {
+            var __generic_math_tmp = i;
+            i = GenericMath("+", __generic_math_tmp, 1);
+            return __generic_math_tmp;
+        }()) {
             if (GenericMath("===", index, null) && GenericMath("===", this.elements[i], x)) {
                 index = GenericMath("+", i, 1);
             }
@@ -300,10 +328,18 @@ var $M = Sylvester.Matrix.create;
 
 Sylvester.Matrix.I = function(n) {
     var els = [], i = n, j;
-    while (i--) {
+    while (function() {
+        var __generic_math_tmp = i;
+        i = GenericMath("-", __generic_math_tmp, 1);
+        return __generic_math_tmp;
+    }()) {
         j = n;
         els[i] = [];
-        while (j--) {
+        while (function() {
+            var __generic_math_tmp = j;
+            j = GenericMath("-", __generic_math_tmp, 1);
+            return __generic_math_tmp;
+        }()) {
             els[i][j] = GenericMath("===", i, j) ? 1 : 0;
         }
     }
@@ -313,7 +349,11 @@ Sylvester.Matrix.I = function(n) {
 Sylvester.Matrix.Diagonal = function(elements) {
     var i = elements.length;
     var M = Sylvester.Matrix.I(i);
-    while (i--) {
+    while (function() {
+        var __generic_math_tmp = i;
+        i = GenericMath("-", __generic_math_tmp, 1);
+        return __generic_math_tmp;
+    }()) {
         M.elements[i][i] = elements[i];
     }
     return M;
@@ -321,7 +361,7 @@ Sylvester.Matrix.Diagonal = function(elements) {
 
 Sylvester.Matrix.Rotation = function(theta, a) {
     if (!a) {
-        return Sylvester.Matrix.create([ [ Math.cos(theta), -Math.sin(theta) ], [ Math.sin(theta), Math.cos(theta) ] ]);
+        return Sylvester.Matrix.create([ [ Math.cos(theta), GenericMath("-", 0, Math.sin(theta)) ], [ Math.sin(theta), Math.cos(theta) ] ]);
     }
     var axis = a.dup();
     if (GenericMath("!==", axis.elements.length, 3)) {
@@ -335,17 +375,17 @@ Sylvester.Matrix.Rotation = function(theta, a) {
 
 Sylvester.Matrix.RotationX = function(t) {
     var c = Math.cos(t), s = Math.sin(t);
-    return Sylvester.Matrix.create([ [ 1, 0, 0 ], [ 0, c, -s ], [ 0, s, c ] ]);
+    return Sylvester.Matrix.create([ [ 1, 0, 0 ], [ 0, c, GenericMath("-", 0, s) ], [ 0, s, c ] ]);
 };
 
 Sylvester.Matrix.RotationY = function(t) {
     var c = Math.cos(t), s = Math.sin(t);
-    return Sylvester.Matrix.create([ [ c, 0, s ], [ 0, 1, 0 ], [ -s, 0, c ] ]);
+    return Sylvester.Matrix.create([ [ c, 0, s ], [ 0, 1, 0 ], [ GenericMath("-", 0, s), 0, c ] ]);
 };
 
 Sylvester.Matrix.RotationZ = function(t) {
     var c = Math.cos(t), s = Math.sin(t);
-    return Sylvester.Matrix.create([ [ c, -s, 0 ], [ s, c, 0 ], [ 0, 0, 1 ] ]);
+    return Sylvester.Matrix.create([ [ c, GenericMath("-", 0, s), 0 ], [ s, c, 0 ], [ 0, 0, 1 ] ]);
 };
 
 Sylvester.Matrix.Random = function(n, m) {
@@ -356,10 +396,18 @@ Sylvester.Matrix.Random = function(n, m) {
 
 Sylvester.Matrix.Zero = function(n, m) {
     var els = [], i = n, j;
-    while (i--) {
+    while (function() {
+        var __generic_math_tmp = i;
+        i = GenericMath("-", __generic_math_tmp, 1);
+        return __generic_math_tmp;
+    }()) {
         j = m;
         els[i] = [];
-        while (j--) {
+        while (function() {
+            var __generic_math_tmp = j;
+            j = GenericMath("-", __generic_math_tmp, 1);
+            return __generic_math_tmp;
+        }()) {
             els[i][j] = 0;
         }
     }
@@ -387,7 +435,11 @@ Sylvester.Matrix.prototype = {
             return null;
         }
         var col = [], n = this.elements.length;
-        for (var i = 0; GenericMath("<", i, n); i++) {
+        for (var i = 0; GenericMath("<", i, n); function() {
+            var __generic_math_tmp = i;
+            i = GenericMath("+", __generic_math_tmp, 1);
+            return __generic_math_tmp;
+        }()) {
             col.push(this.elements[i][GenericMath("-", j, 1)]);
         }
         return Sylvester.Vector.create(col);
@@ -423,9 +475,17 @@ Sylvester.Matrix.prototype = {
             return false;
         }
         var i = this.elements.length, nj = this.elements[0].length, j;
-        while (i--) {
+        while (function() {
+            var __generic_math_tmp = i;
+            i = GenericMath("-", __generic_math_tmp, 1);
+            return __generic_math_tmp;
+        }()) {
             j = nj;
-            while (j--) {
+            while (function() {
+                var __generic_math_tmp = j;
+                j = GenericMath("-", __generic_math_tmp, 1);
+                return __generic_math_tmp;
+            }()) {
                 if (GenericMath(">", Math.abs(GenericMath("-", this.elements[i][j], M[i][j])), Sylvester.precision)) {
                     return false;
                 }
@@ -441,10 +501,18 @@ Sylvester.Matrix.prototype = {
             return Sylvester.Matrix.create([]);
         }
         var els = [], i = this.elements.length, nj = this.elements[0].length, j;
-        while (i--) {
+        while (function() {
+            var __generic_math_tmp = i;
+            i = GenericMath("-", __generic_math_tmp, 1);
+            return __generic_math_tmp;
+        }()) {
             j = nj;
             els[i] = [];
-            while (j--) {
+            while (function() {
+                var __generic_math_tmp = j;
+                j = GenericMath("-", __generic_math_tmp, 1);
+                return __generic_math_tmp;
+            }()) {
                 els[i][j] = fn.call(context, this.elements[i][j], GenericMath("+", i, 1), GenericMath("+", j, 1));
             }
         }
@@ -519,13 +587,25 @@ Sylvester.Matrix.prototype = {
         }
         var i = this.elements.length, nj = M[0].length, j;
         var cols = this.elements[0].length, c, elements = [], sum;
-        while (i--) {
+        while (function() {
+            var __generic_math_tmp = i;
+            i = GenericMath("-", __generic_math_tmp, 1);
+            return __generic_math_tmp;
+        }()) {
             j = nj;
             elements[i] = [];
-            while (j--) {
+            while (function() {
+                var __generic_math_tmp = j;
+                j = GenericMath("-", __generic_math_tmp, 1);
+                return __generic_math_tmp;
+            }()) {
                 c = cols;
                 sum = 0;
-                while (c--) {
+                while (function() {
+                    var __generic_math_tmp = c;
+                    c = GenericMath("-", __generic_math_tmp, 1);
+                    return __generic_math_tmp;
+                }()) {
                     sum += GenericMath("*", this.elements[i][c], M[c][j]);
                 }
                 elements[i][j] = sum;
@@ -540,11 +620,19 @@ Sylvester.Matrix.prototype = {
         }
         var elements = [], ni = c, i, nj, j;
         var rows = this.elements.length, cols = this.elements[0].length;
-        while (ni--) {
+        while (function() {
+            var __generic_math_tmp = ni;
+            ni = GenericMath("-", __generic_math_tmp, 1);
+            return __generic_math_tmp;
+        }()) {
             i = GenericMath("-", GenericMath("-", c, ni), 1);
             elements[i] = [];
             nj = d;
-            while (nj--) {
+            while (function() {
+                var __generic_math_tmp = nj;
+                nj = GenericMath("-", __generic_math_tmp, 1);
+                return __generic_math_tmp;
+            }()) {
                 j = GenericMath("-", GenericMath("-", d, nj), 1);
                 elements[i][j] = this.elements[GenericMath("-", GenericMath("+", a, i), 1) % rows][GenericMath("-", GenericMath("+", b, j), 1) % cols];
             }
@@ -555,10 +643,18 @@ Sylvester.Matrix.prototype = {
         if (GenericMath("===", this.elements.length, 0)) return Sylvester.Matrix.create([]);
         var rows = this.elements.length, i, cols = this.elements[0].length, j;
         var elements = [], i = cols;
-        while (i--) {
+        while (function() {
+            var __generic_math_tmp = i;
+            i = GenericMath("-", __generic_math_tmp, 1);
+            return __generic_math_tmp;
+        }()) {
             j = rows;
             elements[i] = [];
-            while (j--) {
+            while (function() {
+                var __generic_math_tmp = j;
+                j = GenericMath("-", __generic_math_tmp, 1);
+                return __generic_math_tmp;
+            }()) {
                 elements[i][j] = this.elements[j][i];
             }
         }
@@ -573,9 +669,17 @@ Sylvester.Matrix.prototype = {
             return null;
         }
         var m = 0, i = this.elements.length, nj = this.elements[0].length, j;
-        while (i--) {
+        while (function() {
+            var __generic_math_tmp = i;
+            i = GenericMath("-", __generic_math_tmp, 1);
+            return __generic_math_tmp;
+        }()) {
             j = nj;
-            while (j--) {
+            while (function() {
+                var __generic_math_tmp = j;
+                j = GenericMath("-", __generic_math_tmp, 1);
+                return __generic_math_tmp;
+            }()) {
                 if (GenericMath(">", Math.abs(this.elements[i][j]), Math.abs(m))) {
                     m = this.elements[i][j];
                 }
@@ -588,8 +692,16 @@ Sylvester.Matrix.prototype = {
             return null;
         }
         var index = null, ni = this.elements.length, i, nj = this.elements[0].length, j;
-        for (i = 0; GenericMath("<", i, ni); i++) {
-            for (j = 0; GenericMath("<", j, nj); j++) {
+        for (i = 0; GenericMath("<", i, ni); function() {
+            var __generic_math_tmp = i;
+            i = GenericMath("+", __generic_math_tmp, 1);
+            return __generic_math_tmp;
+        }()) {
+            for (j = 0; GenericMath("<", j, nj); function() {
+                var __generic_math_tmp = j;
+                j = GenericMath("+", __generic_math_tmp, 1);
+                return __generic_math_tmp;
+            }()) {
                 if (GenericMath("===", this.elements[i][j], x)) {
                     return {
                         i: GenericMath("+", i, 1),
@@ -605,7 +717,11 @@ Sylvester.Matrix.prototype = {
             return null;
         }
         var els = [], n = this.elements.length;
-        for (var i = 0; GenericMath("<", i, n); i++) {
+        for (var i = 0; GenericMath("<", i, n); function() {
+            var __generic_math_tmp = i;
+            i = GenericMath("+", __generic_math_tmp, 1);
+            return __generic_math_tmp;
+        }()) {
             els.push(this.elements[i][i]);
         }
         return Sylvester.Vector.create(els);
@@ -614,12 +730,24 @@ Sylvester.Matrix.prototype = {
         if (GenericMath("===", this.elements.length, 0)) return Sylvester.Matrix.create([]);
         var M = this.dup(), els;
         var n = this.elements.length, i, j, np = this.elements[0].length, p;
-        for (i = 0; GenericMath("<", i, n); i++) {
+        for (i = 0; GenericMath("<", i, n); function() {
+            var __generic_math_tmp = i;
+            i = GenericMath("+", __generic_math_tmp, 1);
+            return __generic_math_tmp;
+        }()) {
             if (GenericMath("===", M.elements[i][i], 0)) {
-                for (j = GenericMath("+", i, 1); GenericMath("<", j, n); j++) {
+                for (j = GenericMath("+", i, 1); GenericMath("<", j, n); function() {
+                    var __generic_math_tmp = j;
+                    j = GenericMath("+", __generic_math_tmp, 1);
+                    return __generic_math_tmp;
+                }()) {
                     if (GenericMath("!==", M.elements[j][i], 0)) {
                         els = [];
-                        for (p = 0; GenericMath("<", p, np); p++) {
+                        for (p = 0; GenericMath("<", p, np); function() {
+                            var __generic_math_tmp = p;
+                            p = GenericMath("+", __generic_math_tmp, 1);
+                            return __generic_math_tmp;
+                        }()) {
                             els.push(GenericMath("+", M.elements[i][p], M.elements[j][p]));
                         }
                         M.elements[i] = els;
@@ -628,10 +756,18 @@ Sylvester.Matrix.prototype = {
                 }
             }
             if (GenericMath("!==", M.elements[i][i], 0)) {
-                for (j = GenericMath("+", i, 1); GenericMath("<", j, n); j++) {
+                for (j = GenericMath("+", i, 1); GenericMath("<", j, n); function() {
+                    var __generic_math_tmp = j;
+                    j = GenericMath("+", __generic_math_tmp, 1);
+                    return __generic_math_tmp;
+                }()) {
                     var multiplier = GenericMath("/", M.elements[j][i], M.elements[i][i]);
                     els = [];
-                    for (p = 0; GenericMath("<", p, np); p++) {
+                    for (p = 0; GenericMath("<", p, np); function() {
+                        var __generic_math_tmp = p;
+                        p = GenericMath("+", __generic_math_tmp, 1);
+                        return __generic_math_tmp;
+                    }()) {
                         els.push(GenericMath("<=", p, i) ? 0 : GenericMath("-", M.elements[j][p], GenericMath("*", M.elements[i][p], multiplier)));
                     }
                     M.elements[j] = els;
@@ -649,7 +785,11 @@ Sylvester.Matrix.prototype = {
         }
         var M = this.toRightTriangular();
         var det = M.elements[0][0], n = M.elements.length;
-        for (var i = 1; GenericMath("<", i, n); i++) {
+        for (var i = 1; GenericMath("<", i, n); function() {
+            var __generic_math_tmp = i;
+            i = GenericMath("+", __generic_math_tmp, 1);
+            return __generic_math_tmp;
+        }()) {
             det = GenericMath("*", det, M.elements[i][i]);
         }
         return det;
@@ -665,7 +805,11 @@ Sylvester.Matrix.prototype = {
             return null;
         }
         var tr = this.elements[0][0], n = this.elements.length;
-        for (var i = 1; GenericMath("<", i, n); i++) {
+        for (var i = 1; GenericMath("<", i, n); function() {
+            var __generic_math_tmp = i;
+            i = GenericMath("+", __generic_math_tmp, 1);
+            return __generic_math_tmp;
+        }()) {
             tr += this.elements[i][i];
         }
         return tr;
@@ -676,11 +820,23 @@ Sylvester.Matrix.prototype = {
         }
         var M = this.toRightTriangular(), rank = 0;
         var i = this.elements.length, nj = this.elements[0].length, j;
-        while (i--) {
+        while (function() {
+            var __generic_math_tmp = i;
+            i = GenericMath("-", __generic_math_tmp, 1);
+            return __generic_math_tmp;
+        }()) {
             j = nj;
-            while (j--) {
+            while (function() {
+                var __generic_math_tmp = j;
+                j = GenericMath("-", __generic_math_tmp, 1);
+                return __generic_math_tmp;
+            }()) {
                 if (GenericMath(">", Math.abs(M.elements[i][j]), Sylvester.precision)) {
-                    rank++;
+                    (function() {
+                        var __generic_math_tmp = rank;
+                        rank = GenericMath("+", __generic_math_tmp, 1);
+                        return __generic_math_tmp;
+                    })();
                     break;
                 }
             }
@@ -700,9 +856,17 @@ Sylvester.Matrix.prototype = {
         if (GenericMath("!==", i, M.length)) {
             return null;
         }
-        while (i--) {
+        while (function() {
+            var __generic_math_tmp = i;
+            i = GenericMath("-", __generic_math_tmp, 1);
+            return __generic_math_tmp;
+        }()) {
             j = nj;
-            while (j--) {
+            while (function() {
+                var __generic_math_tmp = j;
+                j = GenericMath("-", __generic_math_tmp, 1);
+                return __generic_math_tmp;
+            }()) {
                 T.elements[i][GenericMath("+", cols, j)] = M[i][j];
             }
         }
@@ -719,11 +883,19 @@ Sylvester.Matrix.prototype = {
         var M = this.augment(Sylvester.Matrix.I(n)).toRightTriangular();
         var np = M.elements[0].length, p, els, divisor;
         var inverse_elements = [], new_element;
-        while (i--) {
+        while (function() {
+            var __generic_math_tmp = i;
+            i = GenericMath("-", __generic_math_tmp, 1);
+            return __generic_math_tmp;
+        }()) {
             els = [];
             inverse_elements[i] = [];
             divisor = M.elements[i][i];
-            for (p = 0; GenericMath("<", p, np); p++) {
+            for (p = 0; GenericMath("<", p, np); function() {
+                var __generic_math_tmp = p;
+                p = GenericMath("+", __generic_math_tmp, 1);
+                return __generic_math_tmp;
+            }()) {
                 new_element = GenericMath("/", M.elements[i][p], divisor);
                 els.push(new_element);
                 if (GenericMath(">=", p, n)) {
@@ -732,9 +904,17 @@ Sylvester.Matrix.prototype = {
             }
             M.elements[i] = els;
             j = i;
-            while (j--) {
+            while (function() {
+                var __generic_math_tmp = j;
+                j = GenericMath("-", __generic_math_tmp, 1);
+                return __generic_math_tmp;
+            }()) {
                 els = [];
-                for (p = 0; GenericMath("<", p, np); p++) {
+                for (p = 0; GenericMath("<", p, np); function() {
+                    var __generic_math_tmp = p;
+                    p = GenericMath("+", __generic_math_tmp, 1);
+                    return __generic_math_tmp;
+                }()) {
                     els.push(GenericMath("-", M.elements[j][p], GenericMath("*", M.elements[i][p], M.elements[j][i])));
                 }
                 M.elements[j] = els;
@@ -756,7 +936,11 @@ Sylvester.Matrix.prototype = {
         var matrix_rows = [];
         var n = this.elements.length;
         if (GenericMath("===", n, 0)) return "[]";
-        for (var i = 0; GenericMath("<", i, n); i++) {
+        for (var i = 0; GenericMath("<", i, n); function() {
+            var __generic_math_tmp = i;
+            i = GenericMath("+", __generic_math_tmp, 1);
+            return __generic_math_tmp;
+        }()) {
             matrix_rows.push(Sylvester.Vector.create(this.elements[i]).inspect());
         }
         return matrix_rows.join("\n");
@@ -766,10 +950,18 @@ Sylvester.Matrix.prototype = {
         if (elements[0] && GenericMath("!==", typeof elements[0][0], "undefined")) {
             i = elements.length;
             this.elements = [];
-            while (i--) {
+            while (function() {
+                var __generic_math_tmp = i;
+                i = GenericMath("-", __generic_math_tmp, 1);
+                return __generic_math_tmp;
+            }()) {
                 j = elements[i].length;
                 this.elements[i] = [];
-                while (j--) {
+                while (function() {
+                    var __generic_math_tmp = j;
+                    j = GenericMath("-", __generic_math_tmp, 1);
+                    return __generic_math_tmp;
+                }()) {
                     this.elements[i][j] = elements[i][j];
                 }
             }
@@ -777,7 +969,11 @@ Sylvester.Matrix.prototype = {
         }
         var n = elements.length;
         this.elements = [];
-        for (i = 0; GenericMath("<", i, n); i++) {
+        for (i = 0; GenericMath("<", i, n); function() {
+            var __generic_math_tmp = i;
+            i = GenericMath("+", __generic_math_tmp, 1);
+            return __generic_math_tmp;
+        }()) {
             this.elements.push([ elements[i] ]);
         }
         return this;
@@ -872,7 +1068,7 @@ Sylvester.Line.prototype = {
         var P = this.anchor.elements, X = this.direction.elements, Q = obj.anchor.elements, Y = obj.direction.elements;
         var X1 = X[0], X2 = X[1], X3 = X[2], Y1 = Y[0], Y2 = Y[1], Y3 = Y[2];
         var PsubQ1 = GenericMath("-", P[0], Q[0]), PsubQ2 = GenericMath("-", P[1], Q[1]), PsubQ3 = GenericMath("-", P[2], Q[2]);
-        var XdotQsubP = GenericMath("-", GenericMath("-", GenericMath("*", -X1, PsubQ1), GenericMath("*", X2, PsubQ2)), GenericMath("*", X3, PsubQ3));
+        var XdotQsubP = GenericMath("-", GenericMath("-", GenericMath("*", GenericMath("-", 0, X1), PsubQ1), GenericMath("*", X2, PsubQ2)), GenericMath("*", X3, PsubQ3));
         var YdotPsubQ = GenericMath("+", GenericMath("+", GenericMath("*", Y1, PsubQ1), GenericMath("*", Y2, PsubQ2)), GenericMath("*", Y3, PsubQ3));
         var XdotX = GenericMath("+", GenericMath("+", GenericMath("*", X1, X1), GenericMath("*", X2, X2)), GenericMath("*", X3, X3));
         var YdotY = GenericMath("+", GenericMath("+", GenericMath("*", Y1, Y1), GenericMath("*", Y2, Y2)), GenericMath("*", Y3, Y3));
@@ -922,7 +1118,7 @@ Sylvester.Line.prototype = {
         return Sylvester.Line.create([ GenericMath("+", GenericMath("+", GenericMath("+", C1, GenericMath("*", R[0][0], x)), GenericMath("*", R[0][1], y)), GenericMath("*", R[0][2], z)), GenericMath("+", GenericMath("+", GenericMath("+", C2, GenericMath("*", R[1][0], x)), GenericMath("*", R[1][1], y)), GenericMath("*", R[1][2], z)), GenericMath("+", GenericMath("+", GenericMath("+", C3, GenericMath("*", R[2][0], x)), GenericMath("*", R[2][1], y)), GenericMath("*", R[2][2], z)) ], [ GenericMath("+", GenericMath("+", GenericMath("*", R[0][0], D[0]), GenericMath("*", R[0][1], D[1])), GenericMath("*", R[0][2], D[2])), GenericMath("+", GenericMath("+", GenericMath("*", R[1][0], D[0]), GenericMath("*", R[1][1], D[1])), GenericMath("*", R[1][2], D[2])), GenericMath("+", GenericMath("+", GenericMath("*", R[2][0], D[0]), GenericMath("*", R[2][1], D[1])), GenericMath("*", R[2][2], D[2])) ]);
     },
     reverse: function() {
-        return Sylvester.Line.create(this.anchor, this.direction.x(-1));
+        return Sylvester.Line.create(this.anchor, this.direction.x(GenericMath("-", 0, 1)));
     },
     reflectionIn: function(obj) {
         if (obj.normal) {
@@ -1146,7 +1342,11 @@ Sylvester.Plane.prototype = {
             var N = this.normal.elements, A = this.anchor.elements, O = obj.normal.elements, B = obj.anchor.elements;
             var solver = Sylvester.Matrix.Zero(2, 2), i = 0;
             while (solver.isSingular()) {
-                i++;
+                (function() {
+                    var __generic_math_tmp = i;
+                    i = GenericMath("+", __generic_math_tmp, 1);
+                    return __generic_math_tmp;
+                })();
                 solver = Sylvester.Matrix.create([ [ N[i % 3], N[GenericMath("+", i, 1) % 3] ], [ O[i % 3], O[GenericMath("+", i, 1) % 3] ] ]);
             }
             var inverse = solver.inverse().elements;
@@ -1154,7 +1354,11 @@ Sylvester.Plane.prototype = {
             var y = GenericMath("+", GenericMath("+", GenericMath("*", O[0], B[0]), GenericMath("*", O[1], B[1])), GenericMath("*", O[2], B[2]));
             var intersection = [ GenericMath("+", GenericMath("*", inverse[0][0], x), GenericMath("*", inverse[0][1], y)), GenericMath("+", GenericMath("*", inverse[1][0], x), GenericMath("*", inverse[1][1], y)) ];
             var anchor = [];
-            for (var j = 1; GenericMath("<=", j, 3); j++) {
+            for (var j = 1; GenericMath("<=", j, 3); function() {
+                var __generic_math_tmp = j;
+                j = GenericMath("+", __generic_math_tmp, 1);
+                return __generic_math_tmp;
+            }()) {
                 anchor.push(GenericMath("===", i, j) ? 0 : intersection[GenericMath("+", j, GenericMath("-", 5, i) % 3) % 3]);
             }
             return Sylvester.Line.create(anchor, direction);
@@ -1255,7 +1459,11 @@ Sylvester.Plane.XZ = Sylvester.Plane.ZX;
 
 Sylvester.Plane.fromPoints = function(points) {
     var np = points.length, list = [], i, P, n, N, A, B, C, D, theta, prevN, totalN = Sylvester.Vector.Zero(3);
-    for (i = 0; GenericMath("<", i, np); i++) {
+    for (i = 0; GenericMath("<", i, np); function() {
+        var __generic_math_tmp = i;
+        i = GenericMath("+", __generic_math_tmp, 1);
+        return __generic_math_tmp;
+    }()) {
         P = Sylvester.Vector.create(points[i]).to3D();
         if (GenericMath("===", P, null)) {
             return null;
@@ -1339,13 +1547,21 @@ Sylvester.Polygon.prototype = {
         var i;
         if (GenericMath("!==", this.cached.triangles, null)) {
             i = this.cached.triangles.length;
-            while (i--) {
+            while (function() {
+                var __generic_math_tmp = i;
+                i = GenericMath("-", __generic_math_tmp, 1);
+                return __generic_math_tmp;
+            }()) {
                 this.cached.triangles[i].plane = fn(this.cached.triangles[i].plane);
             }
         }
         if (GenericMath("!==", this.cached.surfaceIntegralElements, null)) {
             i = this.cached.surfaceIntegralElements.length;
-            while (i--) {
+            while (function() {
+                var __generic_math_tmp = i;
+                i = GenericMath("-", __generic_math_tmp, 1);
+                return __generic_math_tmp;
+            }()) {
                 this.cached.surfaceIntegralElements[i].plane = fn(this.cached.surfaceIntegralElements[i].plane);
             }
         }
@@ -1379,7 +1595,11 @@ Sylvester.Polygon.prototype = {
         } else {
             var trigs = this.trianglesForSurfaceIntegral(), area = 0;
             var i = trigs.length;
-            while (i--) {
+            while (function() {
+                var __generic_math_tmp = i;
+                i = GenericMath("-", __generic_math_tmp, 1);
+                return __generic_math_tmp;
+            }()) {
                 area += GenericMath("*", trigs[i].area(), trigs[i].plane.normal.dot(this.plane.normal));
             }
             return area;
@@ -1392,7 +1612,11 @@ Sylvester.Polygon.prototype = {
         } else {
             var A, M = 0, V = Sylvester.Vector.Zero(3), P, C, trigs = this.trianglesForSurfaceIntegral();
             var i = trigs.length;
-            while (i--) {
+            while (function() {
+                var __generic_math_tmp = i;
+                i = GenericMath("-", __generic_math_tmp, 1);
+                return __generic_math_tmp;
+            }()) {
                 A = GenericMath("*", trigs[i].area(), trigs[i].plane.normal.dot(this.plane.normal));
                 M += A;
                 P = V.elements;
@@ -1468,13 +1692,21 @@ Sylvester.Polygon.prototype = {
             if (GenericMath("===", dt, null) || GenericMath("===", dt, 0)) {
                 return;
             }
-            theta += GenericMath("*", A.cross(B).isParallelTo(self.plane.normal) ? 1 : -1, dt);
+            theta += GenericMath("*", A.cross(B).isParallelTo(self.plane.normal) ? 1 : GenericMath("-", 0, 1), dt);
             if (GenericMath(">=", theta, GenericMath("-", GenericMath("*", 2, Math.PI), Sylvester.precision))) {
-                loops++;
+                (function() {
+                    var __generic_math_tmp = loops;
+                    loops = GenericMath("+", __generic_math_tmp, 1);
+                    return __generic_math_tmp;
+                })();
                 theta -= GenericMath("*", 2, Math.PI);
             }
-            if (GenericMath("<=", theta, GenericMath("+", GenericMath("*", -2, Math.PI), Sylvester.precision))) {
-                loops--;
+            if (GenericMath("<=", theta, GenericMath("+", GenericMath("*", GenericMath("-", 0, 2), Math.PI), Sylvester.precision))) {
+                (function() {
+                    var __generic_math_tmp = loops;
+                    loops = GenericMath("-", __generic_math_tmp, 1);
+                    return __generic_math_tmp;
+                })();
                 theta += GenericMath("*", 2, Math.PI);
             }
         });
@@ -1527,7 +1759,11 @@ Sylvester.Polygon.prototype = {
         }
         this.vertices = new Sylvester.LinkedList.Circular;
         var i = pointSet.length, newVertex;
-        while (i--) {
+        while (function() {
+            var __generic_math_tmp = i;
+            i = GenericMath("-", __generic_math_tmp, 1);
+            return __generic_math_tmp;
+        }()) {
             newVertex = pointSet[i].isConvex ? pointSet[i] : new Sylvester.Polygon.Vertex(pointSet[i]);
             this.vertices.prepend(new Sylvester.LinkedList.Node(newVertex));
         }
@@ -1617,7 +1853,11 @@ Sylvester.Polygon.Vertex.prototype.type = function(polygon) {
 Sylvester.Polygon.Vertex.convert = function(points) {
     var pointSet = points.toArray ? points.toArray() : points;
     var list = [], n = pointSet.length;
-    for (var i = 0; GenericMath("<", i, n); i++) {
+    for (var i = 0; GenericMath("<", i, n); function() {
+        var __generic_math_tmp = i;
+        i = GenericMath("+", __generic_math_tmp, 1);
+        return __generic_math_tmp;
+    }()) {
         list.push(new Sylvester.Polygon.Vertex(pointSet[i]));
     }
     return list;
@@ -1631,7 +1871,11 @@ Sylvester.LinkedList.prototype = {
     last: null,
     forEach: function(fn, context) {
         var node = this.first, n = this.length;
-        for (var i = 0; GenericMath("<", i, n); i++) {
+        for (var i = 0; GenericMath("<", i, n); function() {
+            var __generic_math_tmp = i;
+            i = GenericMath("+", __generic_math_tmp, 1);
+            return __generic_math_tmp;
+        }()) {
             fn.call(context, node, i);
             node = node.next;
         }
@@ -1641,7 +1885,11 @@ Sylvester.LinkedList.prototype = {
             return null;
         }
         var node = this.first;
-        while (i--) {
+        while (function() {
+            var __generic_math_tmp = i;
+            i = GenericMath("-", __generic_math_tmp, 1);
+            return __generic_math_tmp;
+        }()) {
             node = node.next;
         }
         return node;
@@ -1652,7 +1900,11 @@ Sylvester.LinkedList.prototype = {
     },
     toArray: function() {
         var arr = [], node = this.first, n = this.length;
-        while (n--) {
+        while (function() {
+            var __generic_math_tmp = n;
+            n = GenericMath("-", __generic_math_tmp, 1);
+            return __generic_math_tmp;
+        }()) {
             arr.push(node.data || node);
             node = node.next;
         }
@@ -1684,7 +1936,11 @@ Sylvester.LinkedList.Circular.Methods = {
             this.last.next = node;
             this.last = node;
         }
-        this.length++;
+        (function() {
+            var __generic_math_tmp = this.length;
+            this.length = GenericMath("+", __generic_math_tmp, 1);
+            return __generic_math_tmp;
+        })();
     },
     prepend: function(node) {
         if (GenericMath("===", this.first, null)) {
@@ -1697,7 +1953,11 @@ Sylvester.LinkedList.Circular.Methods = {
             this.last.next = node;
             this.first = node;
         }
-        this.length++;
+        (function() {
+            var __generic_math_tmp = this.length;
+            this.length = GenericMath("+", __generic_math_tmp, 1);
+            return __generic_math_tmp;
+        })();
     },
     insertAfter: function(node, newNode) {
         newNode.prev = node;
@@ -1707,7 +1967,11 @@ Sylvester.LinkedList.Circular.Methods = {
         if (GenericMath("===", newNode.prev, this.last)) {
             this.last = newNode;
         }
-        this.length++;
+        (function() {
+            var __generic_math_tmp = this.length;
+            this.length = GenericMath("+", __generic_math_tmp, 1);
+            return __generic_math_tmp;
+        })();
     },
     insertBefore: function(node, newNode) {
         newNode.prev = node.prev;
@@ -1717,7 +1981,11 @@ Sylvester.LinkedList.Circular.Methods = {
         if (GenericMath("===", newNode.next, this.first)) {
             this.first = newNode;
         }
-        this.length++;
+        (function() {
+            var __generic_math_tmp = this.length;
+            this.length = GenericMath("+", __generic_math_tmp, 1);
+            return __generic_math_tmp;
+        })();
     },
     remove: function(node) {
         if (GenericMath(">", this.length, 1)) {
@@ -1735,11 +2003,19 @@ Sylvester.LinkedList.Circular.Methods = {
         }
         node.prev = null;
         node.next = null;
-        this.length--;
+        (function() {
+            var __generic_math_tmp = this.length;
+            this.length = GenericMath("-", __generic_math_tmp, 1);
+            return __generic_math_tmp;
+        })();
     },
     withData: function(data) {
         var nodeFromStart = this.first, nodeFromEnd = this.last, n = Math.ceil(GenericMath("/", this.length, 2));
-        while (n--) {
+        while (function() {
+            var __generic_math_tmp = n;
+            n = GenericMath("-", __generic_math_tmp, 1);
+            return __generic_math_tmp;
+        }()) {
             if (GenericMath("===", nodeFromStart.data, data)) {
                 return nodeFromStart;
             }
@@ -1762,7 +2038,11 @@ for (var method in Sylvester.LinkedList.Circular.Methods) {
 Sylvester.LinkedList.Circular.fromArray = function(list, useNodes) {
     var linked = new Sylvester.LinkedList.Circular;
     var n = list.length;
-    while (n--) {
+    while (function() {
+        var __generic_math_tmp = n;
+        n = GenericMath("-", __generic_math_tmp, 1);
+        return __generic_math_tmp;
+    }()) {
         linked.prepend(useNodes ? new Sylvester.LinkedList.Node(list[n]) : list[n]);
     }
     return linked;

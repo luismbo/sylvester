@@ -13,11 +13,55 @@ try {
 var ast = jsp.parse(data);
 
 // Returns an AST for the expression:
-//   SchemeNumber.fn["<op>"](<left>, <right>)
+//   GenericMath("<op>", <left>, <right>)
 function genericOp(op, left, right) {
     return [ "call",
              [ "name", "GenericMath" ],
              [ [ "string", op ], left, right ] ];
+}
+
+// Returns an AST for the expression:
+//   GenericMath("<op>", 0, <expr>)
+//
+// This of course only makes sense for - or +.
+function genericUnaryOp(op, expr) {
+    return [ "call",
+             [ "name", "GenericMath" ],
+             [ [ "string", op ], [ "num", 0 ], expr ] ];
+}
+
+// Returns an AST for the expression:
+//   (<expr> = GenericMath("<op*>", <expr>, 1), <expr>)
+function genericUnaryPrefixModifOp(op, expr) {
+    return [ "seq",
+             [ "assign", true,
+               expr,
+               [ "call",
+                 [ "name", "GenericMath" ],
+                 [ [ "string", op.charAt(0) ], expr, [ "num", 1 ] ] ] ],
+             expr ];
+}
+
+// Returns an AST for the expression:
+//   (function () {
+//     var __generic_math_tmp = <expr>;
+//     <expr> = GenericMath("<op*>", __generic_math_tmp, 1);
+//     return __generic_math_tmp;
+//   })();
+function genericUnaryPostfixOp(op, expr) {
+    return [ "call",
+             [ "function", null, [],
+               [ [ "var", [ [ "__generic_math_tmp", expr ] ] ],
+                 [ "stat",
+                   [ "assign", true,
+                     expr,
+                     [ "call",
+                       [ "name", "GenericMath" ],
+                       [ [ "string", op.charAt(0) ],
+                         [ "name", "__generic_math_tmp" ],
+                         [ "num", 1 ] ] ] ] ],
+                 [ "return",
+                   [ "name", "__generic_math_tmp" ] ] ] ] ];
 }
 
 function generalizeArithmetic(ast) {
@@ -31,6 +75,24 @@ function generalizeArithmetic(ast) {
                 return genericOp(op, walk(left), walk(right));
             default:
                 return [ this[0], op, walk(left), walk(right) ];
+            }
+        },
+        "unary-prefix": function(op, expr) {
+            switch (op) {
+            case "-": case "+":
+                return genericUnaryOp(op, walk(expr));
+            case "++": case "--":
+                return genericUnaryPrefixOp(op, walk(expr));
+            default:
+                return [ this[0], op, walk(expr) ];
+            }
+        },
+        "unary-postfix": function(op, expr) {
+            switch (op) {
+            case "++": case "--":
+                return genericUnaryPostfixOp(op, walk(expr));
+            default:
+                return [ this[0], op, walk(expr) ];
             }
         }
     }, function() { return walk(ast); });
